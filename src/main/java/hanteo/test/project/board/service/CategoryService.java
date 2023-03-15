@@ -50,7 +50,11 @@ public class CategoryService {
     }
 
     public String findById(Long id) {
+        if (categoryIdMap.get(id) == null) {
+            throw new IllegalArgumentException("해당 키가 존재하지 않습니다. : %d".formatted(id));
+        }
         Category category = categoryIdMap.get(id);
+
         return gson.toJson(convertToCategoryJson(category));
     }
 
@@ -73,6 +77,9 @@ public class CategoryService {
     }
 
     public String findByName(String name) {
+        if (categoryNameMap.get(name) == null) {
+            throw new IllegalArgumentException(String.format("해당 키가 존재하지 않습니다. : %s",name));
+        }
         Map<Long, Category> longCategoryHashMap = categoryNameMap.get(name);
         List<CategoryJson> result = new ArrayList<>();
         for (Long id : longCategoryHashMap.keySet()) {
